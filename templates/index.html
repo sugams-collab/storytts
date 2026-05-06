@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Story → Audiobook | Local TTS Converter</title>
+  <meta name="description" content="Convert any multi-page web story into a downloadable MP3 audiobook using local, offline AI text-to-speech. Supports English and Hindi." />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ── Header ──────────────────────────────────────────────────────────── -->
+  <header class="header">
+    <div class="logo-icon">🎧</div>
+    <h1>Story → Audiobook</h1>
+    <p>Convert any multi-page web story into a downloadable MP3, entirely offline.</p>
+
+    <div class="hw-badge">
+      <span class="dot"></span>
+      {% if has_cuda %}
+        GPU ready &nbsp;·&nbsp; {{ ram_gb }} GB RAM &nbsp;·&nbsp; Recommended: <strong>&nbsp;Coqui TTS</strong>
+      {% elif has_mps %}
+        Apple MPS ready &nbsp;·&nbsp; {{ ram_gb }} GB RAM &nbsp;·&nbsp; Recommended: <strong>&nbsp;Coqui TTS</strong>
+      {% else %}
+        CPU mode &nbsp;·&nbsp; {{ ram_gb }} GB RAM &nbsp;·&nbsp; Recommended: <strong>&nbsp;Piper TTS</strong>
+      {% endif %}
+    </div>
+  </header>
+
+  <!-- ── Generate Form ────────────────────────────────────────────────────── -->
+  <section class="card">
+    <p class="card-title">📖 Story Source</p>
+
+    <form id="generate-form" novalidate>
+
+      <div class="form-group">
+        <label class="form-label" for="url-input">Story URL</label>
+        <div class="input-wrap">
+          <span class="input-icon">🔗</span>
+          <input
+            id="url-input"
+            class="url-input"
+            type="url"
+            placeholder="https://example.com/story/chapter-1"
+            autocomplete="off"
+            spellcheck="false"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">TTS Engine</label>
+        <div class="engine-grid">
+
+          <div class="engine-option">
+            <input
+              type="radio" name="engine" id="engine-auto" value="auto"
+              {% if recommended_engine == "auto" or recommended_engine == "piper" %}checked{% endif %}
+            />
+            <label class="engine-label" for="engine-auto">
+              <span class="engine-icon">🤖</span>
+              <span class="engine-name">Auto Detect</span>
+              <span class="engine-desc">Let the app choose based on your hardware</span>
+              <span class="engine-badge">Recommended</span>
+            </label>
+          </div>
+
+          <div class="engine-option">
+            <input type="radio" name="engine" id="engine-piper" value="piper" />
+            <label class="engine-label" for="engine-piper">
+              <span class="engine-icon">⚡</span>
+              <span class="engine-name">Piper TTS</span>
+              <span class="engine-desc">Fast, lightweight, great on CPU &amp; low RAM</span>
+            </label>
+          </div>
+
+          <div class="engine-option">
+            <input type="radio" name="engine" id="engine-coqui" value="coqui" />
+            <label class="engine-label" for="engine-coqui">
+              <span class="engine-icon">🧠</span>
+              <span class="engine-name">Coqui TTS</span>
+              <span class="engine-desc">High-fidelity voice, best with GPU or 4GB+ RAM</span>
+            </label>
+          </div>
+
+        </div>
+      </div>
+
+      <button id="btn-generate" class="btn-generate" type="submit">
+        <span id="btn-text">🎧 Generate Audiobook</span>
+      </button>
+
+      <div id="error-box" class="error-box"></div>
+
+    </form>
+  </section>
+
+  <!-- ── Progress + Logs ──────────────────────────────────────────────────── -->
+  <section id="progress-section" class="card">
+    <p class="card-title">⚙️ Processing</p>
+
+    <div class="status-row">
+      <span id="status-pill" class="status-pill">⏳ Queued</span>
+      <span id="page-counter" class="page-counter">Page 0 / ?</span>
+    </div>
+
+    <div class="progress-track">
+      <div id="progress-fill" class="progress-fill"></div>
+    </div>
+    <div id="progress-pct" class="progress-percent">0%</div>
+
+    <div style="margin-top: 20px;">
+      <div class="terminal-header">
+        <span class="t-dot red"></span>
+        <span class="t-dot yellow"></span>
+        <span class="t-dot green"></span>
+        <span class="terminal-title">live logs</span>
+      </div>
+      <div id="terminal" class="terminal" aria-live="polite" aria-label="Live processing logs"></div>
+    </div>
+  </section>
+
+  <!-- ── Download ─────────────────────────────────────────────────────────── -->
+  <section id="download-section">
+    <div class="download-card">
+      <div class="download-info">
+        <h3>✅ Audiobook Ready!</h3>
+        <p id="download-name">Your story has been converted successfully.</p>
+      </div>
+      <a id="download-link" class="btn-download" href="#" download="audiobook.mp3">
+        ⬇ Download MP3
+      </a>
+    </div>
+  </section>
+
+  <!-- ── Footer ───────────────────────────────────────────────────────────── -->
+  <footer class="footer">
+    Powered by
+    <a href="https://fastapi.tiangolo.com" target="_blank" rel="noopener">FastAPI</a> ·
+    <a href="https://github.com/rhasspy/piper" target="_blank" rel="noopener">Piper TTS</a> ·
+    <a href="https://github.com/coqui-ai/TTS" target="_blank" rel="noopener">Coqui TTS</a>
+    — 100% local &amp; offline
+  </footer>
+
+</div>
+
+<script src="/static/script.js"></script>
+</body>
+</html>

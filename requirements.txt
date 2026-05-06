@@ -1,0 +1,34 @@
+# ── Web Framework ─────────────────────────────────────────────────────────────
+fastapi>=0.111.0
+uvicorn[standard]>=0.29.0
+python-multipart>=0.0.9
+jinja2>=3.1.4
+httpx[http2]>=0.27.0
+
+# ── Scraping & Extraction ─────────────────────────────────────────────────────
+beautifulsoup4>=4.12.3
+lxml>=5.2.1
+lxml_html_clean>=0.4.0
+trafilatura>=1.9.0
+
+# ── Text Processing ───────────────────────────────────────────────────────────
+langdetect>=1.0.9
+
+# ── TTS engines (install at least one) ───────────────────────────────────────
+# Piper (lightweight, CPU):
+#   pip install piper-tts          (downloads ~50 MB binary)
+# Coqui TTS (high-fidelity, heavier):
+#   pip install TTS                (downloads models on first use, ~200–500 MB)
+
+# ── Audio Processing ──────────────────────────────────────────────────────────
+pydub>=0.25.1
+
+# ── Resilience ───────────────────────────────────────────────────────────────
+tenacity>=8.3.0
+
+# ── Hardware Detection ────────────────────────────────────────────────────────
+psutil>=5.9.8
+
+# ── Optional: GPU support via PyTorch (needed by Coqui on GPU) ───────────────
+# Install the correct version for your CUDA from https://pytorch.org
+# e.g.: pip install torch --index-url https://download.pytorch.org/whl/cu121

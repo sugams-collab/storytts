@@ -1,0 +1,45 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Env / secrets
+.env
+.venv
+.env.*
+*.key
+*.pem
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+venv/
+env/
+pip-wheel-metadata/
+*.sqlite3
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log
+/dist
+/build
+coverage/
+
+# Logs
+*.log
+
+# Misc
+*.pyc
+*.swp
+
+temp_audio/
+info.txt
